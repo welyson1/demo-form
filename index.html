@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-translate="pageTitle">Reserva de Grupos - Hostal Providencia</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Enhanced input styles for better visual feedback */
+        .form-input {
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .form-input:hover {
+            border-color: #9ca3af; /* Tailwind gray-400 */
+        }
+        .form-input:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
+            outline: none;
+        }
+        /* Custom styles for validation message */
+        .validation-message {
+            pointer-events: none; /* Ignora clique quando invisível */
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+
+        .lang-btn.active {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    
+    <!-- Language Switcher -->
+    <div class="container mx-auto px-4 pt-4 flex justify-center md:justify-end relative z-50">
+        <div class="flex space-x-2 bg-white p-1 rounded-full shadow">
+            <button id="lang-es" class="lang-btn px-4 py-2 text-sm rounded-full transition-colors duration-300">ES</button>
+            <button id="lang-pt" class="lang-btn px-4 py-2 text-sm rounded-full transition-colors duration-300">PT</button>
+            <button id="lang-en" class="lang-btn px-4 py-2 text-sm rounded-full transition-colors duration-300">EN</button>
+        </div>
+    </div>
+
+    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
+        <h2 data-translate="mainTitle" class="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-8">Reserva y Contacto</h2>
+
+        <!-- Validation Message Area -->
+        <div id="validationMessage" class="validation-message fixed top-5 right-5 bg-red-500 text-white py-3 px-5 rounded-lg shadow-xl opacity-0 transform translate-y-[-20px] z-50">
+            <p data-translate="validationText">Por favor, rellene todos los campos obligatorios (*).</p>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8 justify-center items-start">
+
+            <!-- Group Booking Form -->
+            <form id="formGrupo" class="w-full lg:w-1/2 bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <h3 data-translate="bookingTitle" class="text-2xl font-bold text-center mb-6 text-[#4CAF50]">Booking Grupos</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                    <!-- Contact Name -->
+                    <div class="md:col-span-2">
+                        <label for="contacto" data-translate="contactNameLabel" class="block text-sm font-medium text-gray-700">Nombre de Contacto *</label>
+                        <input type="text" id="contacto" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm" autocomplete="name" required>
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label for="email" data-translate="emailLabel" class="block text-sm font-medium text-gray-700">Email *</label>
+                        <input type="email" id="email" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm" autocomplete="email" required>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div>
+                        <label for="telefono" data-translate="phoneLabel" class="block text-sm font-medium text-gray-700">Nº de Teléfono *</label>
+                        <input type="tel" id="telefono" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm" autocomplete="tel" required>
+                    </div>
+
+                    <!-- Number of Guests -->
+                    <div>
+                        <label for="huespedes" data-translate="guestsLabel" class="block text-sm font-medium text-gray-700">Nº de Huéspedes *</label>
+                        <input type="number" id="huespedes" min="1" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>
+                    </div>
+
+                    <!-- Number of Nights -->
+                    <div>
+                        <label for="noches" data-translate="nightsLabel" class="block text-sm font-medium text-gray-700">¿Cuántas Noches? *</label>
+                        <input type="number" id="noches" min="1" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>
+                    </div>
+                    
+                    <!-- Check-in Date -->
+                    <div class="md:col-span-2">
+                        <label for="fecha" data-translate="checkinLabel" class="block text-sm font-medium text-gray-700">Fecha de Entrada *</label>
+                        <input type="date" id="fecha" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>
+                    </div>
+
+                    <!-- Average Age -->
+                    <div>
+                        <label for="edad" data-translate="ageLabel" class="block text-sm font-medium text-gray-700">Edad Promedio</label>
+                        <select id="edad" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                            <option data-translate="ageOpt1">Menor de 18</option>
+                            <option>18-24</option>
+                            <option>25-30</option>
+                            <option>31-40</option>
+                            <option>41+</option>
+                        </select>
+                    </div>
+
+                    <!-- Country -->
+                    <div>
+                        <label for="pais" data-translate="countryLabel" class="block text-sm font-medium text-gray-700">País</label>
+                        <input type="text" id="pais" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm" autocomplete="country-name">
+                    </div>
+
+                    <!-- Bathroom Type -->
+                    <div>
+                        <label for="bano" data-translate="bathroomLabel" class="block text-sm font-medium text-gray-700">Tipo de Baño</label>
+                        <select id="bano" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                            <option data-translate="bathOpt1">Privado</option>
+                            <option data-translate="bathOpt2">Compartido</option>
+                            <option data-translate="bathOpt3">No tiene importancia</option>
+                        </select>
+                    </div>
+
+                    <!-- Bed Type -->
+                    <div>
+                        <label for="cama" data-translate="bedLabel" class="block text-sm font-medium text-gray-700">Tipo de Cama</label>
+                        <select id="cama" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                            <option data-translate="bedOpt1">Individual</option>
+                            <option data-translate="bedOpt2">Doble</option>
+                        </select>
+                    </div>
+
+                    <!-- Message -->
+                    <div class="md:col-span-2">
+                        <label for="mensaje" data-translate="messageLabel" class="block text-sm font-medium text-gray-700">Mensaje</label>
+                        <textarea id="mensaje" rows="4" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="mt-6 space-y-4 md:space-y-0 md:flex md:space-x-4">
+                    <button type="button" id="whatsapp-grupo-btn" class="w-full flex items-center justify-center gap-2 px-4 py-3 border border-transparent text-sm font-semibold rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-transform transform hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                        <span data-translate="whatsappButton">Reservar por WhatsApp</span>
+                    </button>
+                    <button type="button" id="email-grupo-btn" class="w-full flex items-center justify-center gap-2 px-4 py-3 border border-gray-300 text-sm font-semibold rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-transform transform hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                        <span data-translate="emailButton">Reservar por Email</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Contact Section -->
+            <div class="w-full lg:w-1/3 bg-white p-6 md:p-8 rounded-2xl shadow-lg flex flex-col items-center justify-center text-center">
+                 <h3 data-translate="contactTitle" class="text-2xl font-bold text-gray-800 mb-4">¿Dudas o Consultas?</h3>
+                 <p data-translate="contactText" class="text-gray-600 mb-6">Para cualquier otra información, contáctenos directamente por WhatsApp. ¡Es rápido y fácil!</p>
+                 <button id="whatsapp-direto-btn" class="w-full flex items-center justify-center gap-3 px-4 py-4 border border-transparent text-base font-semibold rounded-full shadow-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-transform transform hover:scale-105">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                    <span data-translate="directWhatsappButton">Hablar por WhatsApp</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const numeroWhatsApp = '5516997714103';
+            let currentLanguage = 'es';
+
+            const translations = {
+                es: {
+                    pageTitle: "Reserva de Grupos - Hostal Providencia",
+                    mainTitle: "Reserva y Contacto",
+                    validationText: "Por favor, rellene todos los campos obligatorios (*).",
+                    bookingTitle: "Booking Grupos",
+                    contactNameLabel: "Nombre de Contacto *",
+                    emailLabel: "Email *",
+                    phoneLabel: "Nº de Teléfono *",
+                    guestsLabel: "Nº de Huéspedes *",
+                    nightsLabel: "¿Cuántas Noches? *",
+                    checkinLabel: "Fecha de Entrada *",
+                    ageLabel: "Edad Promedio",
+                    ageOpt1: "Menor de 18",
+                    countryLabel: "País",
+                    bathroomLabel: "Tipo de Baño",
+                    bathOpt1: "Privado",
+                    bathOpt2: "Compartido",
+                    bathOpt3: "No tiene importancia",
+                    bedLabel: "Tipo de Cama",
+                    bedOpt1: "Individual",
+                    bedOpt2: "Doble",
+                    messageLabel: "Mensaje",
+                    whatsappButton: "Reservar por WhatsApp",
+                    emailButton: "Reservar por Email",
+                    contactTitle: "¿Dudas o Consultas?",
+                    contactText: "Para cualquier otra información, contáctenos directamente por WhatsApp. ¡Es rápido y fácil!",
+                    directWhatsappButton: "Hablar por WhatsApp",
+                    waGroupSubject: "*Reserva de Grupo - Hostal Providencia*",
+                    waDirectMessage: "¡Hola! Me gustaría hacer una consulta sobre el Hostal Providencia.",
+                    emailGroupSubject: "Reserva de Grupo - Hostal Providencia",
+                    fieldLabels: {
+                        contact: "Contacto",
+                        email: "Email",
+                        phone: "Teléfono",
+                        country: "País",
+                        guests: "Nº de Huéspedes",
+                        nights: "Nº de Noches",
+                        checkin: "Fecha de Entrada",
+                        age: "Edad Promedio",
+                        bathroom: "Tipo de Baño",
+                        bed: "Tipo de Cama",
+                        message: "Mensaje"
+                    }
+                },
+                pt: {
+                    pageTitle: "Reserva de Grupos - Hostal Providencia",
+                    mainTitle: "Reserva e Contato",
+                    validationText: "Por favor, preencha todos os campos obrigatórios (*).",
+                    bookingTitle: "Reserva de Grupos",
+                    contactNameLabel: "Nome de Contato *",
+                    emailLabel: "Email *",
+                    phoneLabel: "Nº de Telefone *",
+                    guestsLabel: "Nº de Hóspedes *",
+                    nightsLabel: "Quantas Noites? *",
+                    checkinLabel: "Data de Entrada *",
+                    ageLabel: "Idade Média",
+                    ageOpt1: "Menor de 18",
+                    countryLabel: "País",
+                    bathroomLabel: "Tipo de Banheiro",
+                    bathOpt1: "Privado",
+                    bathOpt2: "Compartilhado",
+                    bathOpt3: "Não tem importância",
+                    bedLabel: "Tipo de Cama",
+                    bedOpt1: "Individual",
+                    bedOpt2: "Doble",
+                    messageLabel: "Mensagem",
+                    whatsappButton: "Reservar por WhatsApp",
+                    emailButton: "Reservar por Email",
+                    contactTitle: "Dúvidas ou Consultas?",
+                    contactText: "Para qualquer outra informação, entre em contato conosco diretamente pelo WhatsApp. É rápido e fácil!",
+                    directWhatsappButton: "Falar no WhatsApp",
+                    waGroupSubject: "*Reserva de Grupo - Hostal Providencia*",
+                    waDirectMessage: "Olá! Gostaria de fazer uma consulta sobre o Hostal Providencia.",
+                    emailGroupSubject: "Reserva de Grupo - Hostal Providencia",
+                    fieldLabels: {
+                        contact: "Contato",
+                        email: "Email",
+                        phone: "Telefone",
+                        country: "País",
+                        guests: "Nº de Hóspedes",
+                        nights: "Nº de Noites",
+                        checkin: "Data de Entrada",
+                        age: "Idade Média",
+                        bathroom: "Tipo de Banheiro",
+                        bed: "Tipo de Cama",
+                        message: "Mensagem"
+                    }
+                },
+                en: {
+                    pageTitle: "Group Bookings - Hostal Providencia",
+                    mainTitle: "Booking and Contact",
+                    validationText: "Please fill in all required fields (*).",
+                    bookingTitle: "Group Bookings",
+                    contactNameLabel: "Contact Name *",
+                    emailLabel: "Email *",
+                    phoneLabel: "Phone Number *",
+                    guestsLabel: "Number of Guests *",
+                    nightsLabel: "How many nights? *",
+                    checkinLabel: "Check-in Date *",
+                    ageLabel: "Average Age",
+                    ageOpt1: "Under 18",
+                    countryLabel: "Country",
+                    bathroomLabel: "Bathroom Type",
+                    bathOpt1: "Private",
+                    bathOpt2: "Shared",
+                    bathOpt3: "No preference",
+                    bedLabel: "Bed Type",
+                    bedOpt1: "Single",
+                    bedOpt2: "Double",
+                    messageLabel: "Message",
+                    whatsappButton: "Book via WhatsApp",
+                    emailButton: "Book via Email",
+                    contactTitle: "Questions or Inquiries?",
+                    contactText: "For any other information, contact us directly on WhatsApp. It's fast and easy!",
+                    directWhatsappButton: "Chat on WhatsApp",
+                    waGroupSubject: "*Group Booking - Hostal Providencia*",
+                    waDirectMessage: "Hello! I'd like to make an inquiry about Hostal Providencia.",
+                    emailGroupSubject: "Group Booking - Hostal Providencia",
+                    fieldLabels: {
+                        contact: "Contact",
+                        email: "Email",
+                        phone: "Phone",
+                        country: "Country",
+                        guests: "Number of Guests",
+                        nights: "Number of Nights",
+                        checkin: "Check-in Date",
+                        age: "Average Age",
+                        bathroom: "Bathroom Type",
+                        bed: "Bed Type",
+                        message: "Message"
+                    }
+                }
+            };
+
+            const changeLanguage = (lang) => {
+                if (!translations[lang]) return;
+                currentLanguage = lang;
+                
+                document.querySelectorAll('[data-translate]').forEach(el => {
+                    const key = el.getAttribute('data-translate');
+                    if (translations[lang][key]) {
+                        el.innerHTML = translations[lang][key];
+                    }
+                });
+
+                document.documentElement.lang = lang;
+                
+                document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+                document.getElementById(`lang-${lang}`).classList.add('active');
+            }
+
+            const showValidationMessage = () => {
+                const messageDiv = document.getElementById('validationMessage');
+                messageDiv.style.opacity = '1';
+                messageDiv.style.transform = 'translateY(0)';
+                setTimeout(() => {
+                    messageDiv.style.opacity = '0';
+                    messageDiv.style.transform = 'translateY(-20px)';
+                }, 3000);
+            }
+            
+            const validateForm = (formId) => {
+                const form = document.getElementById(formId);
+                if (!form) return false;
+
+                const requiredInputs = form.querySelectorAll('[required]');
+                for (const input of requiredInputs) {
+                    if (!input.value.trim()) {
+                        input.focus();
+                        showValidationMessage();
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            const getMessageContent = () => {
+                const T = translations[currentLanguage];
+                const L = T.fieldLabels;
+
+                const fields = {
+                    contact: document.getElementById('contacto').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('telefono').value,
+                    guests: document.getElementById('huespedes').value,
+                    nights: document.getElementById('noches').value,
+                    checkin: document.getElementById('fecha').value,
+                    age: document.getElementById('edad').value,
+                    bathroom: document.getElementById('bano').value,
+                    bed: document.getElementById('cama').value,
+                    message: document.getElementById('mensaje').value.trim(),
+                    country: document.getElementById('pais').value,
+                };
+                
+                const parts = { wa: [], email: [] };
+
+                parts.wa.push(`*${L.contact}:* ${fields.contact}`);
+                parts.wa.push(`*${L.email}:* ${fields.email}`);
+                parts.wa.push(`*${L.phone}:* ${fields.phone}`);
+                parts.wa.push(`*${L.guests}:* ${fields.guests}`);
+                parts.wa.push(`*${L.nights}:* ${fields.nights}`);
+                parts.wa.push(`*${L.checkin}:* ${fields.checkin}`);
+
+                parts.email.push(`${L.contact}: ${fields.contact}`);
+                parts.email.push(`${L.email}: ${fields.email}`);
+                parts.email.push(`${L.phone}: ${fields.phone}`);
+                parts.email.push(`${L.guests}: ${fields.guests}`);
+                parts.email.push(`${L.nights}: ${fields.nights}`);
+                parts.email.push(`${L.checkin}: ${fields.checkin}`);
+
+                if (fields.country) {
+                    parts.wa.push(`*${L.country}:* ${fields.country}`);
+                    parts.email.push(`${L.country}: ${fields.country}`);
+                }
+                
+                parts.wa.push(`*${L.age}:* ${fields.age}`);
+                parts.email.push(`${L.age}: ${fields.age}`);
+                parts.wa.push(`*${L.bathroom}:* ${fields.bathroom}`);
+                parts.email.push(`${L.bathroom}: ${fields.bathroom}`);
+                parts.wa.push(`*${L.bed}:* ${fields.bed}`);
+                parts.email.push(`${L.bed}: ${fields.bed}`);
+                
+                if (fields.message) {
+                    parts.wa.push(`*${L.message}:* ${fields.message}`);
+                    parts.email.push(`\n${L.message}:\n${fields.message}`);
+                }
+
+                return {
+                    wa: `${T.waGroupSubject}%0A${parts.wa.join('%0A')}`,
+                    email: {
+                        subject: T.emailGroupSubject,
+                        body: `${T.emailGroupSubject}\n\n${parts.email.join('\n')}`
+                    }
+                };
+            }
+
+            const enviarWhatsAppGrupo = () => {
+                if (!validateForm('formGrupo')) return;
+                const message = getMessageContent();
+                window.open(`https://wa.me/${numeroWhatsApp}?text=${message.wa}`, '_blank');
+            }
+
+            const enviarEmailGrupo = () => {
+                if (!validateForm('formGrupo')) return;
+                const message = getMessageContent();
+                window.location.href = `mailto:?subject=${encodeURIComponent(message.email.subject)}&body=${encodeURIComponent(message.email.body)}`;
+            }
+
+            const enviarWhatsAppDireto = () => {
+                const T = translations[currentLanguage];
+                const texto = T.waDirectMessage;
+                window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(texto)}`, '_blank');
+            }
+            
+            // Add Event Listeners
+            document.getElementById('lang-es').addEventListener('click', () => changeLanguage('es'));
+            document.getElementById('lang-pt').addEventListener('click', () => changeLanguage('pt'));
+            document.getElementById('lang-en').addEventListener('click', () => changeLanguage('en'));
+
+            document.getElementById('whatsapp-grupo-btn').addEventListener('click', enviarWhatsAppGrupo);
+            document.getElementById('email-grupo-btn').addEventListener('click', enviarEmailGrupo);
+            document.getElementById('whatsapp-direto-btn').addEventListener('click', enviarWhatsAppDireto);
+            
+            // Initialize with default language
+            changeLanguage('es');
+        });
+    </script>
+</body>
+</html>
