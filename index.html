@@ -423,7 +423,7 @@
             const enviarEmailGrupo = () => {
                 if (!validateForm('formGrupo')) return;
                 const message = getMessageContent();
-                window.location.href = `mailto:?subject=${encodeURIComponent(message.email.subject)}&body=${encodeURIComponent(message.email.body)}`;
+                window.location.href = `mailto:reservas@hostalprovidencia.com?subject=${encodeURIComponent(message.email.subject)}&body=${encodeURIComponent(message.email.body)}`;
             }
 
             const enviarWhatsAppDireto = () => {
